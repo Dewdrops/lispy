@@ -2630,7 +2630,7 @@ FUNC is obtained from (`lispy--insert-or-call' DEF FROM-START)"
   ;; (define-key map (kbd "C-k") 'lispy-kill)
   ;; (define-key map (kbd "C-y") 'lispy-yank)
   (define-key map (kbd "C-d") 'lispy-delete)
-  (define-key map (kbd "DEL") 'lispy-delete-backward)
+  ;; (define-key map (kbd "DEL") 'lispy-delete-backward)
   (define-key map (kbd "C-c M-m") 'lispy-mark-symbol)
   (define-key map (kbd "C-c M-o") 'lispy-string-oneline)
   (define-key map (kbd "C-c C-p") 'lispy-pop-copy)
