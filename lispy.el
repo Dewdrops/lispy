@@ -140,14 +140,7 @@
   (require 'noflet)
   (require 'org))
 (require 'help-fns)
-(require 'edebug)
-(require 'ediff)
-(require 'ediff-util)
 (require 'eldoc)
-(require 'outline)
-(require 'semantic)
-(require 'semantic/db)
-(require 'ace-jump-mode)
 (require 'newcomment)
 (require 'lispy-inline)
 
@@ -525,6 +518,7 @@ Return nil if can't move."
 (defun lispy-outline-next (arg)
   "Call `outline-next-visible-heading' ARG times."
   (interactive "p")
+  (require 'outline)
   (dotimes-protect arg
     (let ((pt (point)))
       (outline-next-visible-heading 1)
@@ -535,6 +529,7 @@ Return nil if can't move."
 (defun lispy-outline-prev (arg)
   "Call `outline-previous-visible-heading' ARG times."
   (interactive "p")
+  (require 'outline)
   (dotimes-protect arg
     (let ((pt (point)))
       (outline-previous-visible-heading 1)
@@ -2183,6 +2178,8 @@ For example, a `setq' statement is amended with variable name that it uses."
 
 (defun lispy--goto (fun)
   "Jump to symbol selected from (FUN)."
+  (require 'semantic)
+  (require 'semantic/db)
   (require 'semantic/bovine/el)
   (let ((semantic-on (bound-and-true-p semantic-mode)))
     (semantic-mode 1)
@@ -2546,6 +2543,8 @@ Make text marked if REGIONP is t."
 First region and buffer come from `lispy-store-region-and-buffer'
 Second region and buffer are the current ones."
   (interactive)
+  (require 'ediff)
+  (require 'ediff-util)
   (let ((bnd1 (get 'lispy-store-bounds 'region))
         (bnd2 (lispy--bounds-dwim))
         (buf1
@@ -2590,7 +2589,7 @@ list."
              ((looking-back lispy-right)
               ,@(and from-start '((backward-list)))
               (unwind-protect
-                   (call-interactively ',def)
+                  (call-interactively ',def)
                 ,@(and from-start '((forward-list)))))
 
              ((or (and (looking-back "^ *") (looking-at ";"))
