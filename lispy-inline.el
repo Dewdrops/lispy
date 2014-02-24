@@ -29,8 +29,6 @@
 
 ;;; Code:
 
-(require 's)
-
 (defgroup lispy-faces nil
   "Font-lock faces for `lispy'."
   :group 'lispy
@@ -134,6 +132,22 @@ Return t if at least one was deleted."
           (window-list))
     deleted))
 
+(defsubst lispy--s-trim-left (s)
+  "Remove whitespace at the beginning of S."
+  (if (string-match "\\`[ \t\n\r]+" s)
+      (replace-match "" t t s)
+    s))
+
+(defsubst lispy--s-trim-right (s)
+  "Remove whitespace at the end of S."
+  (if (string-match "[ \t\n\r]+\\'" s)
+      (replace-match "" t t s)
+    s))
+
+(defsubst lispy--s-trim (s)
+  "Remove whitespace at the beginning and end of S."
+  (lispy--s-trim-left (lispy--s-trim-right s)))
+
 (defun lispy-describe-inline ()
   "Display documentation for `lispy--current-function' inline."
   (interactive)
@@ -174,7 +188,7 @@ Return t if at least one was deleted."
                   ((eq major-mode 'clojure-mode)
                    (require 'le-clojure)
                    (let ((rsymbol (lispy--clojure-resolve sym)))
-                     (s-trim
+                     (lispy--s-trim
                       (replace-regexp-in-string
                        "^\\(?:-+\n\\|\n*.*$.*@.*\n*\\)" ""
                        (cond ((stringp rsymbol)
