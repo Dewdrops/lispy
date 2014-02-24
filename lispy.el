@@ -140,7 +140,7 @@
   (require 'noflet)
   (require 'org))
 (require 'help-fns)
-(require 'eldoc)
+;; (require 'eldoc)
 (require 'newcomment)
 (require 'lispy-inline)
 
@@ -2608,6 +2608,11 @@ list."
   (unless (region-active-p)
     ad-do-it))
 
+(eval-after-load 'eldoc
+  '(dolist (x
+            '(special-lispy-counterclockwise special-lispy-split special-lispy-stringify special-lispy-splice special-lispy-raise special-lispy-raise-some special-lispy-flow special-lispy-goto special-lispy-goto-local special-lispy-space special-lispy-barf special-lispy-slurp special-lispy-undo special-lispy-ace-paren special-lispy-ace-symbol special-lispy-ace-symbol-replace special-lispy-out-forward special-lispy-out-backward special-lispy-out-forward-nostring special-lispy-outline-prev special-lispy-outline-next special-lispy-teleport special-lispy-tab special-lispy-move-up special-lispy-join special-lispy-clockwise special-lispy-move-down special-lispy-oneline special-lispy-multiline special-lispy-convolute special-lispy-eval-and-insert special-lispy-new-copy special-lispy-down special-lispy-shifttab))
+     (eldoc-add-command x)))
+
 (defun lispy-define-key (keymap key def &optional from-start)
   "Forward to (`define-key' KEYMAP KEY FUNC).
 FUNC is obtained from (`lispy--insert-or-call' DEF FROM-START)"
@@ -2617,7 +2622,6 @@ FUNC is obtained from (`lispy--insert-or-call' DEF FROM-START)"
       (push func ac-trigger-commands))
     (unless (member func company-begin-commands)
       (push func company-begin-commands))
-    (eldoc-add-command func)
     (define-key keymap (kbd key) func)))
 
 (let ((map lispy-mode-map))
