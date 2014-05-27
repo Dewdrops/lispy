@@ -35,7 +35,7 @@
   :prefix "lispy-face-")
 
 (defface lispy-face-hint
-  '((t (:background "#fff3bc" :foreground "black")))
+    '((t (:background "#fff3bc" :foreground "black")))
   "Basic hint face."
   :group 'lispy-faces)
 
@@ -107,7 +107,7 @@ The caller of `lispy--show' might use a substitute e.g. `describe-function'."
                  (cond ((fboundp sym)
                         (setq lispy-hint-pos (point))
                         (lispy--show (lispy--pretty-args sym))))))
-              ((eq major-mode 'clojure-mode)
+              ((memq major-mode '(clojure-mode cider-repl-mode))
                (require 'le-clojure)
                (setq lispy-hint-pos (point))
                (lispy--show (lispy--clojure-args (lispy--current-function))))
@@ -182,10 +182,9 @@ Return t if at least one was deleted."
                                               "undocumented")))
                                 dc
                               (describe-variable sym)
-                              nil)
-                            )
+                              nil))
                            (t "unbound"))))
-                  ((eq major-mode 'clojure-mode)
+                  ((memq major-mode '(clojure-mode cider-repl-mode))
                    (require 'le-clojure)
                    (let ((rsymbol (lispy--clojure-resolve sym)))
                      (lispy--s-trim
@@ -227,7 +226,7 @@ Return t if at least one was deleted."
 (defun lispy--join-pad (strs width)
   "Join STRS padding each line with WIDTH spaces."
   (let ((padding (make-string width ?\ )))
-    (mapconcat (lambda(x) (concat padding x))
+    (mapconcat (lambda (x) (concat padding x))
                strs
                "\n")))
 
@@ -279,12 +278,18 @@ Return t if at least one was deleted."
       #'identity
       (append
        (list (propertize (symbol-name symbol) 'face 'lispy-face-hint))
-       (mapcar (lambda(x) (propertize (downcase x)
-                                 'face 'lispy-face-req-nosel)) a-req)
-       (mapcar (lambda(x) (propertize (downcase x)
-                                 'face 'lispy-face-opt-nosel)) a-opt)
-       (mapcar (lambda(x) (propertize (concat (downcase x) "...")
-                                 'face 'lispy-face-rst-nosel)) a-rst))
+       (mapcar
+        (lambda (x)
+          (propertize (downcase x) 'face 'lispy-face-req-nosel))
+        a-req)
+       (mapcar
+        (lambda (x)
+          (propertize (downcase x) 'face 'lispy-face-opt-nosel))
+        a-opt)
+       (mapcar
+        (lambda (x)
+          (propertize (concat (downcase x) "...") 'face 'lispy-face-rst-nosel))
+        a-rst))
       " "))))
 
 (provide 'lispy-inline)
