@@ -26,9 +26,9 @@
 
 (defun lispy--eval-clojure (str)
   "Eval STR as Clojure code."
-  (plist-get
+  (nrepl-dict-get
    (nrepl-send-string-sync str)
-   :value))
+   "value"))
 
 (defun lispy--clojure-resolve (symbol)
   "Return resolved SYMBOL.
@@ -121,7 +121,8 @@ Besides functions, handles specials, keywords, maps, vectors and sets."
          (mapconcat
           #'identity
           (mapcar (lambda (x) (propertize (downcase x)
-                                     'face 'lispy-face-req-nosel)) args)
+                                          'face 'lispy-face-req-nosel))
+                  args)
           (concat "\n"
                   (make-string (+ 2 (length symbol)) ?\ ))))
       (propertize args 'face 'lispy-face-hint))))
