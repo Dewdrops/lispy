@@ -3963,9 +3963,9 @@ In case 'setq isn't present, add it."
   (define-key map (kbd "C-c M-m") 'lispy-mark-symbol)
   (define-key map (kbd "C-c M-i") 'lispy-iedit)
   (define-key map (kbd "C-c M-o") 'lispy-string-oneline)
-  (define-key map (kbd "C-c C-p") 'lispy-pop-copy)
-  (define-key map (kbd "C-c C-,") 'lispy-kill-at-point)
-  (define-key map (kbd "C-c C-w") 'lispy-mark)
+  (define-key map (kbd "C-c M-p") 'lispy-pop-copy)
+  (define-key map (kbd "C-c M-,") 'lispy-kill-at-point)
+  (define-key map (kbd "C-c M-w") 'lispy-mark)
   ;; ——— globals: pairs ———————————————————————
   ;; (define-key map (kbd "(") 'lispy-parens)
   ;; (define-key map (kbd "{") 'lispy-braces)
